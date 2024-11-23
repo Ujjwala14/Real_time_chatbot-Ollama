@@ -1,1 +1,12 @@
 # Real_time_chatbot-Ollama
+STEP 1:
+CREATE REPOSITORY
+
+STEP 2:
+CLONE REPOSITORY INTO LOCAL SYSTEM
+
+COMMAND LINE
+GET CLONE https://github.com/Ujjwala14/Real_time_chatbot-Ollama.git
+
+STEP 3:
+CREATE PROJECR IN YOUR IDE
