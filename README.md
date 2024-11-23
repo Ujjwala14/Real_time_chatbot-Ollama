@@ -21,3 +21,16 @@ git config user.email EMAIL ID
 STEP 5: 
 COMMAND LINE
 git push
+
+STEP 6: 
+CREATE ENVIRONMENT
+
+COMMAND LINE
+Conda create -n (env name) python=3.11 -y
+
+STEP 7:
+ACTIVATE CONDA
+
+COMMAND LINE
+Conda activate (env name)
+
