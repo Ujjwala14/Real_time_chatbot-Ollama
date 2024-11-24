@@ -46,6 +46,11 @@ class Information(BaseModel):
 class GetResponse(BaseModel):
     question: str
     context: str
+    model: str
+
+class RatingRequest(BaseModel):
+    response: str
+    rating: int
 
 @app.post("/save_information")
 async def save_information(request_prams:Information):
@@ -60,7 +65,7 @@ async def get_response(request_prams: GetResponse):
     full_context = f"context: {request_prams.context} \n\n Question: {request_prams.question}"
     url = "http://localhost:11434/api/generate"
     payload = json.dumps({
-        "model": "llama3.2:latest",
+        "model": request_prams.model,
         "prompt": full_context,
         "options": {
             "top_k": 1,
@@ -88,6 +93,29 @@ async def get_response(request_prams: GetResponse):
     else:
         raise HTTPException(status_code=response.status_code, detail="Failed to generate response")
 
+@app.post("/insert_rating")
+async def get_rating(request_prams: RatingRequest):
+    try:
+        print(f"request_prams.rating {request_prams.rating}")
+        print(f"request_prams.response {request_prams.response}")
+        conn = sqlite3.connect('llm_responses.db')
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE responses
+            SET rating = ?
+            where answer = ?
+        """,(request_prams.rating, request_prams.response))
+        conn.commit()
+        conn.close()
+        return {"data": "rating stored succcessfully" }
+
+    except Exception as e:
+        print(str(e))
+
+
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8003)
+
